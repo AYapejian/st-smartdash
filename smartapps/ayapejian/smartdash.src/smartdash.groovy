@@ -26,6 +26,7 @@ preferences {
         input "accelerationSensors", "capability.accelerationSensor",     multiple: true, required: false, title: "Which Vibration Sensors?"
         input "locks",               "capability.lock",                   multiple: true, required: false, title: "Which Locks?"
         input "threeAxis",           "capability.threeAxis",              multiple: true, required: true,  title: "Which 3 Axis Sensors?"
+        input "thermostats",         "capability.thermostat",             multiple: true, required: true,  title: "Which Thermostats?"
     }
 }
 
@@ -79,16 +80,20 @@ def initialize() {
     subscribe(accelerationSensors, 'acceleration', accelerationEventHandler);
     subscribe(locks,               'lock',         lockEventHandler);
     subscribe(threeAxis,           'threeAxis',    threeAxisEventHandler);
+    subscribe(thermostats,         'thermostat',   thermostatEventHandler);
 }
 
-def switchEventHandler(evt)       { LOG('switchEventHandler()');        sendPostEvent('switches',            'switch',       evt); }
-def motionEventHandler(evt)       { LOG('motionEventHandler()');        sendPostEvent('motionSensors',       'motion',       evt); }
-def contactEventHandler(evt)      { LOG('contactEventHandler()');       sendPostEvent('contactSensors',      'contact',      evt); }
-def presenceEventHandler(evt)     { LOG('presenceEventHandler()');      sendPostEvent('presenceSensors',     'presence',     evt); }
-def temperatureEventHandler(evt)  { LOG('temperatureEventHandler()');   sendPostEvent('temperatureSensors',  'temperature',  evt); }
-def accelerationEventHandler(evt) { LOG('accelerationEventHandler()');  sendPostEvent('accelerationSensors', 'acceleration', evt); }
-def lockEventHandler(evt)         { LOG('lockEventHandler()');          sendPostEvent('locks',               'lock',         evt); }
-def threeAxisEventHandler(evt)    { LOG('threeAxisEventHandler()');     sendPostEventOrientation('threeAxis',           'threeAxis',    evt); }
+def switchEventHandler(evt)       { LOG('switchEventHandler()');        sendPostEvent('switches',             'switch',       evt); }
+def motionEventHandler(evt)       { LOG('motionEventHandler()');        sendPostEvent('motionSensors',        'motion',       evt); }
+def contactEventHandler(evt)      { LOG('contactEventHandler()');       sendPostEvent('contactSensors',       'contact',      evt); }
+def presenceEventHandler(evt)     { LOG('presenceEventHandler()');      sendPostEvent('presenceSensors',      'presence',     evt); }
+def temperatureEventHandler(evt)  { LOG('temperatureEventHandler()');   sendPostEvent('temperatureSensors',   'temperature',  evt); }
+def accelerationEventHandler(evt) { LOG('accelerationEventHandler()');  sendPostEvent('accelerationSensors',  'acceleration', evt); }
+def lockEventHandler(evt)         { LOG('lockEventHandler()');          sendPostEvent('locks',                'lock',         evt); }
+def thermostatEventHandler(evt)   { LOG('thermostatEventHandler()');    sendPostEvent('thermostats',          'thermostat',   evt); }
+
+def threeAxisEventHandler(evt)    { LOG('threeAxisEventHandler()');     sendPostEventOrientation('threeAxis', 'threeAxis',    evt); }
+
 
 /* ************************************************************************* */
 /* Begin Route Handlers                                                      */
@@ -98,8 +103,8 @@ def getAll() {
     LOG("getAll()");
 
 	def supportedTypes = [
-        "switches", "motionSensors", "contactSensors", "presenceSensors",
-        "temperatureSensors", "accelerationSensors", "locks", "threeAxis"
+        "switches", "motionSensors", "contactSensors", "presenceSensors", "locks",
+        "temperatureSensors", "accelerationSensors", "threeAxis", "thermostats"
     ];
 
     def returnDevices = [:]
